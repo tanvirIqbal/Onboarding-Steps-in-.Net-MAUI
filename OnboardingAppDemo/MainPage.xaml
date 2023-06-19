@@ -1,41 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="OnboardingAppDemo.MainPage">
+             xmlns:vm ="clr-namespace:OnboardingAppDemo.ViewModels"
+             xmlns:vm1 ="clr-namespace:OnboardingAppDemo.Models"
+             x:DataType="vm:OnBoardingVM"
+             x:Class="OnboardingAppDemo.MainPage"
+             Shell.NavBarIsVisible="False">
+    <Grid RowDefinitions="*, Auto" Padding="0, 15">
+        <CarouselView Grid.Row="0" ItemsSource="{Binding OnboardingModels}"
+                      IndicatorView="OnboardingIndicator"
+                      PositionChanged="CarouselView_PositionChanged">
+            <CarouselView.ItemTemplate>
+                <DataTemplate x:DataType="vm1:OnboardingModel">
+                    <Grid RowDefinitions="*, Auto, Auto">
+                        <Image Grid.Row="0"
+                               Source="{Binding Image}"
+                               Aspect="AspectFill"
+                               VerticalOptions="FillAndExpand"
+                               HorizontalOptions="FillAndExpand" />
+                        <Label Grid.Row="1"
+                               Text="{Binding Heading}"
+                               FontSize="30"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Margin="10, 25"/>
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+                        <Label Grid.Row="2"
+                               Text="{Binding Description}"
+                               FontSize="15"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Margin="10, 25"/>
+                    </Grid>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
+        <VerticalStackLayout Grid.Row="1" Spacing="20">
+            <Label Text="Skip"
+                   TextColor="Gray"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   Padding="25, 15"
+                   IsVisible="{Binding IsNotLastStep}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Button IsVisible="{Binding IsLastStep}"
+                    Text="Get Started"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="Black"
+                    Margin="25"
+                    Padding="50, 5"
+                    FontSize="18"
+                    Pressed="Button_Pressed"/>
+            <IndicatorView x:Name="OnboardingIndicator"
+                       IndicatorsShape="Circle"
+                       IndicatorSize="15"
+                       HorizontalOptions="Center"
+                       VerticalOptions="End"
+                       IndicatorColor="LightGray"
+                       SelectedIndicatorColor="Black"/>
         </VerticalStackLayout>
-    </ScrollView>
+    </Grid>
+    
 
 </ContentPage>

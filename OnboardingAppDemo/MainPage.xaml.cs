@@ -1,24 +1,30 @@
-﻿namespace OnboardingAppDemo;
+﻿using OnboardingAppDemo.ViewModels;
+
+namespace OnboardingAppDemo;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
-
+	private readonly OnBoardingVM _onboardingVM;
 	public MainPage()
 	{
 		InitializeComponent();
+		_onboardingVM = new OnBoardingVM();
+		BindingContext = _onboardingVM;
 	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		count++;
+    private void CarouselView_PositionChanged(object sender, PositionChangedEventArgs e)
+    {
+		_onboardingVM.IsLastStep = e.CurrentPosition == (_onboardingVM.OnboardingModels.Count - 1);
+    }
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
+    private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
+    }
+
+    private void Button_Pressed(object sender, EventArgs e)
+    {
+
+    }
 }
 
